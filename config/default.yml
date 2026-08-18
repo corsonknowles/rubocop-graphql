@@ -37,9 +37,13 @@ GraphQL/DisallowedTypes:
   Enabled: false
   VersionAdded: '<<next>>'
   Description: 'Flags field and argument types the project has decided not to expose'
-  # Type name => the message explaining what to use instead. Nothing is disallowed
-  # until this is configured, so the cop is inert out of the box.
-  Types: {}
+  # Type name => the message explaining what to use instead. A name matches as a
+  # trailing segment, so the `Float` entry also covers `Types::Float` and
+  # `GraphQL::Types::Float`. Replace this hash with the types your project
+  # disallows, or set it to `{}` to make the cop inert.
+  Types:
+    Float: 'Float loses precision -- use a decimal scalar that serializes as a string.'
+    GraphQL::Types::Float: 'Float loses precision -- use a decimal scalar that serializes as a string.'
 
 GraphQL/ExtractInputType:
   Enabled: true

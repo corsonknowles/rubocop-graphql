@@ -51,12 +51,20 @@ RSpec.describe RuboCop::Cop::GraphQL::DisallowedTypes, :config do
     end
   end
 
-  context "when Types is missing entirely" do
+  context "with the shipped default configuration" do
     let(:cop_config) { {} }
 
-    it "does not register an offense" do
-      expect_no_offenses(<<~RUBY)
+    it "registers an offense for `Float`" do
+      expect_offense(<<~RUBY)
         field :amount, Float, null: false
+                       ^^^^^ `Float` is not allowed as a field or argument type. Float loses precision -- use a decimal scalar that serializes as a string.
+      RUBY
+    end
+
+    it "registers an offense for the fully qualified form" do
+      expect_offense(<<~RUBY)
+        field :amount, GraphQL::Types::Float, null: false
+                       ^^^^^^^^^^^^^^^^^^^^^ `Float` is not allowed as a field or argument type. Float loses precision -- use a decimal scalar that serializes as a string.
       RUBY
     end
   end

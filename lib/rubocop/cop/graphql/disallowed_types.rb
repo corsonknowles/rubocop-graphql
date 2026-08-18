@@ -12,7 +12,10 @@ module RuboCop
       # say, where the serialization loses precision. The convention is usually documented and
       # then re-litigated in review; this makes it fail the build instead.
       #
-      # Nothing is disallowed by default: the cop is inert until `Types` is configured.
+      # `Float` is disallowed by default, for that reason: it is binary floating point, so it
+      # cannot represent every decimal value exactly. `Types` is a plain replacement rather
+      # than an addition -- set it to the types your project disallows, or to `{}` to make the
+      # cop inert. The cop ships disabled either way.
       #
       # A configured name matches the written constant exactly, or as a trailing segment of it,
       # so `Float` covers `Float`, `Types::Float` and `GraphQL::Types::Float`. Configure
@@ -21,7 +24,7 @@ module RuboCop
       # List types are unwrapped, so `[Float]` and `[Float, null: true]` are flagged too, and
       # both the positional type and the `type:` keyword are checked.
       #
-      # @example Types: {'Float' => 'Use Types::Decimal, which serializes as a string.'}
+      # @example Types: {'Float' => 'Use a decimal scalar that serializes as a string.'} (default)
       #   # bad
       #   field :amount, Float, null: false
       #   argument :amount, Float, required: true
